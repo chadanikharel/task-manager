@@ -1,10 +1,13 @@
 <template>
 <div class="custom-body"> 
 <div class="container">
+  <input type="text">
+  <button type="button" class="btn btn-primary">Filter</button>
   <button type="button" class="btn btn-position btn-primary" @click="this.$router.push(`/add`)">Add Task</button>
     <table>
 	<thead>
 	<tr>
+    <th class="width"></th>
 		<th class="name-width">Name</th>
 		<th class="details-width">Details</th>
 		<th class="action-width" colspan="2">Actions </th>
@@ -12,14 +15,17 @@
 	</thead>
 	<tbody>
 	<tr v-for="(task, index) in taskList"  v-bind:key="index" >
-		<td>{{ task.taskname }}</td>
-		<td>{{ task.details }}</td>
+    <td>
+      <input class="form-check-input" type="checkbox"  :class="{'checked': task.completed}" v-bind="task.completed" @change="markTaskAsCompleted(task)">
+    </td>
+    <td :class="{'checkbox-checked':task.completed}">{{ task.taskname }}</td>
+		<td :class="{'checkbox-checked':task.completed}">{{ task.details }}</td>
 		<td class="cursor"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="icon-color" @click="editTask(index)" /> </td>
 		<td class="cursor" ><font-awesome-icon icon="fa-trash" class="icon-color" @click="showConfirmation(index)"/></td>
 	</tr> 
 	</tbody>
   </table>
-  
+ 
 </div>
 </div>
 </template>
@@ -33,8 +39,9 @@ data() {
   return {
 	taskname:'',
 	details:'',
+  completed:'false',
 	taskList:[],
-  
+  filteredTask: [],
   };
 },
 
@@ -78,6 +85,11 @@ methods: {
   getTaskList() {
       this.taskList = JSON.parse(localStorage.getItem(localStorageKey)) || [];
     },
+
+    markTaskAsCompleted(task){
+      task.completed = true;
+      
+    }
 },
 
 }
@@ -91,6 +103,10 @@ methods: {
   padding: 0;
   font-family: 'Ubuntu', sans-serif;
 
+}
+
+.checked{
+  background-color: #5c3199;
 }
 
 .custom-body {
@@ -109,10 +125,12 @@ methods: {
   min-height: 400px;
 }
 
-h1 {
-  margin-bottom: 20px;
-  text-align: center;
-  color: #333;
+input[type="text"] {
+  padding: 7px;
+  border: none;
+  border-radius: 5px;
+  background-color: #b6b4b4;
+  outline: none;
 }
 
 button{
@@ -126,32 +144,49 @@ button{
 .btn-position{
   cursor: pointer;
   position: relative;
-  left: 566px;
+  left: 279px;
   margin-bottom: 16px;
 }
 
+.form-check{
+  width: 20px;
+}
 table {
 width: 100%;
 margin-bottom: 20px;
 border-collapse: collapse;
 }
 
-th, td {
-text-align: left;
-padding: 8px;
-border: 1px solid #d9d9d9;
-background-color: #d3d1d1;
-
-}
-
 th {
-background-color: #b6b4b4;
-font-weight: bold;
-color: #333;
+  padding: 8px;
+  background-color: #b6b4b4;
+  font-weight: bold;
+  color: #333;
+
 }
 
+td{
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+  background-color: #d3d1d1;
+}
+
+input[type=checkbox]{
+background-color:  #78777a;  
+border: none;
+border-radius: 50px;
+  }
+
+ 
+input[type=checkbox]:checked{
+background-color:  #5c3199;  
+  }
+
+  .checkbox-checked{
+    text-decoration: line-through;
+  }
 .name-width{
-  width: 20%;
+  width: 23%;
 }
 .details-width{
   width: 60%;
