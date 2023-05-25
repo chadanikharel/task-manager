@@ -1,19 +1,19 @@
 <template>
-    <div class="container">
-	<h1 class="label-bold">Task Manager</h1>
+  <div class="custom-body">
+  <div class="container">
+      <h1 class="label-bold">Task Manager</h1>
   <button type="button" class="btn btn-primary btn-position" @click="this.$router.push('/tasklist')">View Task</button>
 	<form>
 	<label class="label-bold">Task Name:</label>
-	<input type="text" v-model="taskname" name="task" placeholder="Enter task name..." />
+	<input type="text" v-model="taskname" name="task" placeholder="Enter task name..." /> 
 	<span class="text-danger" v-if="v$.taskname.$error">{{ v$.taskname.$errors[0].$message }}</span><br>
 	<label class="label-bold">Details:</label>
 	<textarea  name="notes" v-model="details" placeholder="Enter task details..."  ></textarea>
 	<span class="text-danger" v-if="v$.details.$error">{{ v$.details.$errors[0].$message }}</span>
 	</form>
-	<div>
-	<button type="button" class="btn btn-primary" @click="submitTask">{{ buttonName }}</button> 
-	</div>
-  </div>  
+	<button type="button" class="btn btn-primary btn-width" @click="submitTask">{{ buttonName }}</button> 
+  </div>
+</div>
 </template>
 
 <script>
@@ -28,7 +28,8 @@ data() {
     details:'',
     taskList:[],
     buttonName: "Add Task",
-    editIndex: -1
+    editIndex: -1,
+    backgroundColor: '#690e0e',
   };
 },
 
@@ -63,9 +64,6 @@ methods: {
           taskname: this.taskname,
           details: this.details,
         };
-
-      
-        
         this.taskList.push(newTask);
         this.saveTaskList()
       }
@@ -107,27 +105,35 @@ methods: {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Ubuntu', sans-serif;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f1f1f1;
+.custom-body {
+  min-height: 100vh;
+  background: linear-gradient(270deg, #6c5c81, #5d6c99);
 }
-
 .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  top: 50px;
+  max-width: 600px;
+  background-color: #faf5f5;
+  box-shadow:  rgb(6, 15, 24) 0px 20px 30px -10px;
+  border-radius: 10px;
+} 
+
+.label-bold{
+  font-weight: bold;
+  color: #4d4d4d;
+  margin-bottom: 13px;
 }
 
 h1 {
-  margin-bottom: 20px;
+  padding: 10px;
   text-align: center;
   color: #333;
 }
@@ -145,24 +151,27 @@ form textarea {
   border: none;
   border-radius: 5px;
   background-color: #d9d9d9;
-  margin-bottom: 10px;
+  outline: none;
 }
 
 form textarea {
   min-height: 50px;
 }
 
-.label-bold{
-  font-weight: bold;
-  color: #4d4d4d;
+button{
+  background:linear-gradient(270deg, #5c3199, #556cac);
+  border: none;
+}
+
+.btn-width{
+  width: 575px;
   margin-bottom: 20px;
 }
 
 .btn-position{
   cursor: pointer;
   position: relative;
-  left: 665px;
-  margin-bottom: 20px;
+  left: 478px;
 }
 .invalid-input {
 border: 1px solid red;

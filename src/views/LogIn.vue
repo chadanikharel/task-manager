@@ -1,4 +1,5 @@
 <template>
+      <div class="custom-body">
     <div class="container">
     <h2>Login</h2>
     <form action="">
@@ -6,13 +7,14 @@
       <span class="text-danger" v-if="v$.username.$error">{{ v$.username.$errors[0].$message }}</span>
       <input type="password" id="password" name="password" placeholder="Password" v-model="password">
       <span class="text-danger" v-if="v$.password.$error">{{ v$.password.$errors[0].$message }}</span>
+      <button type="button" class="btn btn-primary" @click="logIn">Log in</button>
       <div class="account-display">
       <p>Not a member ?</p>
       <p class="log-in" @click="this.$router.push('/')">Sign up</p>
       </div>
-      <button type="button" class="btn btn-primary" @click="logIn">Log in</button>
     </form>
     </div>
+</div>
 </template>
 
 <script>
@@ -59,19 +61,28 @@ import { required, minLength} from '@vuelidate/validators';
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 *{
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     box-sizing: border-box;
 }
 
+.custom-body {
+  min-height: 100vh;
+  background: linear-gradient(270deg, #8a7e9b, #727fa3);
+}
+
 .container{
-    max-width: 400px;
-    margin: 50px auto;
+   position:relative;
+   top: 80px;
+    max-width: 330px;
     display: flex;
     flex-direction: column;
-    background-color: #f1f1f1;
+    background-color: #e6e3e3;
+    box-shadow: rgb(42, 66, 92) 0px 20px 30px -10px;
+    border-radius: 10px;
 }
 
 h2{
@@ -86,16 +97,20 @@ input[type="email"],
 input[type="password"] {
     width: 89%;
     padding: 5px;
-    margin: 15px 0 20px 22px;
+    margin: 0 0 20px 22px;
     border: none;
-    border-bottom: 2px solid #c5c3c3;
-    background-color: #f1f1f1;
+    border-bottom: 2px solid #b6b4b4;
+    background-color: #e6e3e3;
+    outline: none;
 }
 
 .account-display{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+.account-display p{
+    margin-bottom: 12px;
 }
 
 .log-in{
@@ -104,8 +119,11 @@ input[type="password"] {
     cursor: pointer;
 }
 
+
 button{
-    margin: 24px 80px;
-    width: 217px;
+    margin: 5px 30px 21px 30px;
+    width: 249px;
+    background:linear-gradient(270deg, #5c3199, #556cac);
+    border: none;
 }
 </style>

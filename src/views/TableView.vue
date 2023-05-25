@@ -1,4 +1,5 @@
-<template> 
+<template>
+<div class="custom-body"> 
 <div class="container">
   <button type="button" class="btn btn-position btn-primary" @click="this.$router.push(`/add`)">Add Task</button>
     <table>
@@ -13,19 +14,18 @@
 	<tr v-for="(task, index) in taskList"  v-bind:key="index" >
 		<td>{{ task.taskname }}</td>
 		<td>{{ task.details }}</td>
-		<td class="cursor"><font-awesome-icon icon="fa-solid fa-pen-to-square" @click="editTask(index)" /> </td>
-		<td class="cursor" ><font-awesome-icon icon="fa-trash" @click="showConfirmation(index)"/></td>
+		<td class="cursor"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="icon-color" @click="editTask(index)" /> </td>
+		<td class="cursor" ><font-awesome-icon icon="fa-trash" class="icon-color" @click="showConfirmation(index)"/></td>
 	</tr> 
 	</tbody>
   </table>
   
 </div>
-
+</div>
 </template>
 
 <script>
 import  Swal  from "sweetalert2";
-
 const localStorageKey ='tasks';
 export default{	
  
@@ -66,7 +66,6 @@ methods: {
   if(result.isConfirmed){
     this.taskList.splice(index,1);
     this.saveTaskList()
-    Swal.fire("Deleted","your task has been deleted.","success")
   }
 }
 )  
@@ -85,23 +84,29 @@ methods: {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Ubuntu', sans-serif;
+
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f1f1f1;
+.custom-body {
+  min-height: 100vh;
+  background: linear-gradient(270deg, #6c5c81, #5d6c99);
 }
 
 .container {
-  max-width: 800px;
-  margin: 0 auto;
+  position: relative;
+  top: 100px;
+  max-width: 700px;
   padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #ebe8eb;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  min-height: 400px;
 }
 
 h1 {
@@ -110,11 +115,19 @@ h1 {
   color: #333;
 }
 
+button{
+  background:linear-gradient(270deg, #5c3199, #556cac);
+  border: none;
+}
+
+.icon-color{
+  color: #5c3199;
+}
 .btn-position{
   cursor: pointer;
   position: relative;
-  left: 665px;
-  margin-bottom: 20px;
+  left: 566px;
+  margin-bottom: 16px;
 }
 
 table {
@@ -127,11 +140,12 @@ th, td {
 text-align: left;
 padding: 8px;
 border: 1px solid #d9d9d9;
+background-color: #d3d1d1;
 
 }
 
 th {
-background-color: #d9d9d9;
+background-color: #b6b4b4;
 font-weight: bold;
 color: #333;
 }
