@@ -2,14 +2,21 @@
 <div class="custom-body"> 
 <div class="container">
   <button type="button" class="btn btn-position btn-primary" @click="this.$router.push(`/add`)">Add Task</button>
-  <button type="button" class="btn btn-primary filter-btn-position" @click="showFilteredTaskList= !showFilteredTaskList">
-    {{ showFilteredTaskList ? "show pending": "show completed" }}
-  </button>
-  <div v-if="displayTasks">
+  <button type="button" class="btn btn-primary filter-btn-position" @click="showCompletedTasks">Completed Tasks</button>
+  <button type="button" class="btn filter-btn-position btn-primary" @click="showPendingTasks">Pending Tasks</button>
+  <table >
+    <tbody v-if="displayFilteredTask">
+      <tr v-for="(task, index) in filteredTaskList" :key="index">
+      <td>{{ task.taskname }}</td>
+      <td>{{ task.details }}</td> 
+    </tr>
+    </tbody>
+  </table>
+  <!-- <div v-if="displayFilteredTask">
   <ul>
   <li v-for="(task, index) in filteredTaskList" :key="index">{{ task.taskname }} - {{ task.details }}</li>
 </ul>
-</div>
+</div> -->
     <table>
 	<thead>
 	<tr>
@@ -45,8 +52,8 @@ data() {
 	taskname:'',
 	details:'',
 	taskList:[],
-  showFilteredTaskList: false,
-
+  displayFilteredTask: false,
+  showCompleted : false,
   };
 },
 
@@ -57,7 +64,7 @@ created(){
 
 computed: {
   filteredTaskList(){
-    if(this.showFilteredTaskList){
+    if(this.showCompleted){
       return this.taskList.filter(task => task.completed)
     }
   else{
@@ -115,8 +122,20 @@ methods: {
   this.taskList.forEach(task=>{
   task.completed=false;
   })
-   }
+   },
+
+   showCompletedTasks(){
+    this.displayFilteredTask = true
+    this.showCompleted = true
   },
+
+  showPendingTasks(){
+    this.displayFilteredTask = true
+    this.showCompleted = false
+  },
+  },
+
+ 
 
 }
 </script>
@@ -175,14 +194,15 @@ button{
 }
 .btn-position{
     position: relative;
-    left: 472px;
+    left: 273px;
     bottom: 5px;
 }
 
 .filter-btn-position{
   position: relative;
-  left: 506px;
+  left: 277px;
   bottom: 5px;
+  margin: 0 4px
 }
 table {
 width: 100%;
