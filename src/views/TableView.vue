@@ -2,15 +2,14 @@
 <div class="custom-body"> 
 <div class="container">
   <button type="button" class="btn btn-position btn-primary" @click="this.$router.push(`/add`)">Add Task</button>
-  <button type="button" class="btn btn-primary filter-btn-position">Filter</button>
-  <!-- <table>
-    <tbody>
-      <tr v-for="(task,index) in filteredTaskList" :key="index">
-      <td>{{ task.taskname }}</td>
-      <td>{{ task.details }}</td>
-      </tr>
-    </tbody>
-  </table> -->
+  <button type="button" class="btn btn-primary filter-btn-position" @click="showFilteredTaskList= !showFilteredTaskList">
+    {{ showFilteredTaskList ? "show pending": "show completed" }}
+  </button>
+  <div v-if="displayTasks">
+  <ul>
+  <li v-for="(task, index) in filteredTaskList" :key="index">{{ task.taskname }} - {{ task.details }}</li>
+</ul>
+</div>
     <table>
 	<thead>
 	<tr>
@@ -30,11 +29,8 @@
 		<td class="cursor"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="icon-color" @click="editTask(index)" /> </td>
 		<td class="cursor" ><font-awesome-icon icon="fa-trash" class="icon-color" @click="showConfirmation(index)"/></td>
 	</tr> 
-	</tbody>
+	</tbody> 
   </table>
- <button @click="showCompletedTask = !showCompletedTask">
-    {{ showCompletedTask ? 'Hide Completed Tasks' : 'Show Completed Tasks' }}
-  </button>
 </div>
 </div>
 </template>
@@ -49,7 +45,8 @@ data() {
 	taskname:'',
 	details:'',
 	taskList:[],
-  showCompletedTask: false,
+  showFilteredTaskList: false,
+
   };
 },
 
@@ -60,9 +57,16 @@ created(){
 
 computed: {
   filteredTaskList(){
-  return this.taskList.filter(task => task.completed)
+    if(this.showFilteredTaskList){
+      return this.taskList.filter(task => task.completed)
+    }
+  else{
+    return this.taskList.filter(task => !task.completed);
+  }
 },
 },
+
+
 
 methods: {
   editTask(index) {
@@ -107,12 +111,12 @@ methods: {
     this.saveTaskList;
     },
 
-  initialTaskCompletionStatus(){
-    this.taskList.forEach(task=>{
-      task.completed=false;
-      })
-    }
-},
+ initialTaskCompletionStatus(){
+  this.taskList.forEach(task=>{
+  task.completed=false;
+  })
+   }
+  },
 
 }
 </script>
