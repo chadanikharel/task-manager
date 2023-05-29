@@ -29,7 +29,7 @@ data() {
     taskList:[],
     buttonName: "Add Task",
     editIndex: -1,
-    backgroundColor: '#690e0e',
+    
   };
 },
 
@@ -63,6 +63,7 @@ methods: {
     const newTask = {
           taskname: this.taskname,
           details: this.details,
+          completed: false
         };
         this.taskList.push(newTask);
         this.saveTaskList()

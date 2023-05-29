@@ -1,9 +1,16 @@
 <template>
 <div class="custom-body"> 
 <div class="container">
-  <input type="text">
-  <button type="button" class="btn btn-primary">Filter</button>
   <button type="button" class="btn btn-position btn-primary" @click="this.$router.push(`/add`)">Add Task</button>
+  <button type="button" class="btn btn-primary filter-btn-position">Filter</button>
+  <!-- <table>
+    <tbody>
+      <tr v-for="(task,index) in filteredTaskList" :key="index">
+      <td>{{ task.taskname }}</td>
+      <td>{{ task.details }}</td>
+      </tr>
+    </tbody>
+  </table> -->
     <table>
 	<thead>
 	<tr>
@@ -16,7 +23,7 @@
 	<tbody>
 	<tr v-for="(task, index) in taskList"  v-bind:key="index" >
     <td>
-      <input class="form-check-input" type="checkbox"  :class="{'checked': task.completed}" v-bind="task.completed" @change="markTaskAsCompleted(task)">
+      <input class="form-check-input" type="checkbox"  :checked="task.completed"  @change="toggleTask(index)">
     </td>
     <td :class="{'checkbox-checked':task.completed}">{{ task.taskname }}</td>
 		<td :class="{'checkbox-checked':task.completed}">{{ task.details }}</td>
@@ -25,7 +32,9 @@
 	</tr> 
 	</tbody>
   </table>
- 
+ <button @click="showCompletedTask = !showCompletedTask">
+    {{ showCompletedTask ? 'Hide Completed Tasks' : 'Show Completed Tasks' }}
+  </button>
 </div>
 </div>
 </template>
@@ -39,14 +48,20 @@ data() {
   return {
 	taskname:'',
 	details:'',
-  completed:'false',
 	taskList:[],
-  filteredTask: [],
+  showCompletedTask: false,
   };
 },
 
 created(){
   this.getTaskList();
+  this.initialTaskCompletionStatus();
+},
+
+computed: {
+  filteredTaskList(){
+  return this.taskList.filter(task => task.completed)
+},
 },
 
 methods: {
@@ -86,9 +101,16 @@ methods: {
       this.taskList = JSON.parse(localStorage.getItem(localStorageKey)) || [];
     },
 
-    markTaskAsCompleted(task){
-      task.completed = true;
-      
+  toggleTask(index){
+    this.taskList[index].completed = !this.taskList[index].completed
+    console.log(this.completed)
+    this.saveTaskList;
+    },
+
+  initialTaskCompletionStatus(){
+    this.taskList.forEach(task=>{
+      task.completed=false;
+      })
     }
 },
 
@@ -133,6 +155,12 @@ input[type="text"] {
   outline: none;
 }
 
+.input-position{
+  position: relative;
+  top: 2px;
+  right: 5px;
+}
+
 button{
   background:linear-gradient(270deg, #5c3199, #556cac);
   border: none;
@@ -142,14 +170,15 @@ button{
   color: #5c3199;
 }
 .btn-position{
-  cursor: pointer;
-  position: relative;
-  left: 279px;
-  margin-bottom: 16px;
+    position: relative;
+    left: 472px;
+    bottom: 5px;
 }
 
-.form-check{
-  width: 20px;
+.filter-btn-position{
+  position: relative;
+  left: 506px;
+  bottom: 5px;
 }
 table {
 width: 100%;
@@ -177,14 +206,13 @@ border: none;
 border-radius: 50px;
   }
 
- 
 input[type=checkbox]:checked{
 background-color:  #5c3199;  
   }
 
-  .checkbox-checked{
-    text-decoration: line-through;
-  }
+.checkbox-checked{
+  text-decoration: line-through;
+}
 .name-width{
   width: 23%;
 }
