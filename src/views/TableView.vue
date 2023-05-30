@@ -12,17 +12,14 @@
     </tr>
     </tbody>
   </table>
-  <!-- <div v-if="displayFilteredTask">
-  <ul>
-  <li v-for="(task, index) in filteredTaskList" :key="index">{{ task.taskname }} - {{ task.details }}</li>
-</ul>
-</div> -->
+
     <table>
 	<thead>
 	<tr>
     <th class="width"></th>
 		<th class="name-width">Name</th>
 		<th class="details-width">Details</th>
+    <th>Due Date</th>
 		<th class="action-width" colspan="2">Actions </th>
 	</tr>
 	</thead>
@@ -33,9 +30,11 @@
     </td>
     <td :class="{'checkbox-checked':task.completed}">{{ task.taskname }}</td>
 		<td :class="{'checkbox-checked':task.completed}">{{ task.details }}</td>
+    <td>{{ task.dueDate }}</td>
 		<td class="cursor"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="icon-color" @click="editTask(index)" /> </td>
 		<td class="cursor" ><font-awesome-icon icon="fa-trash" class="icon-color" @click="showConfirmation(index)"/></td>
-	</tr> 
+	</tr>
+  <button @click="sortTaskListByDueDate()">sort</button> 
 	</tbody> 
   </table>
 </div>
@@ -51,6 +50,7 @@ data() {
   return {
 	taskname:'',
 	details:'',
+  dueDate: '',
 	taskList:[],
   displayFilteredTask: false,
   showCompleted : false,
@@ -73,8 +73,6 @@ computed: {
 },
 },
 
-
-
 methods: {
   editTask(index) {
     const taskListLength = this.taskList.length;
@@ -88,8 +86,7 @@ methods: {
 
   showConfirmation(index){
     Swal.fire({
-      title: 'Are you sure ?',
-      text: "You won't be able revert it!",
+      title: 'Are you sure you want to delete it ?',
       icon: 'warning',    
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -113,9 +110,8 @@ methods: {
     },
 
   toggleTask(index){
-    this.taskList[index].completed = !this.taskList[index].completed
-    console.log(this.completed)
-    this.saveTaskList;
+    this.taskList[index].completed = !this.taskList[index].completed;
+    this.saveTaskList();
     },
 
  initialTaskCompletionStatus(){
@@ -135,7 +131,15 @@ methods: {
   },
   },
 
- 
+  sortTaskListByDueDate(){
+    this.taskList.sort((a,b)=>{
+      const dateA = new Date(a.dueDate)
+      const dateB = new Date(b.dueDate)
+      return dateA-dateB
+    })
+    console.log(this.taskList)
+    console.log('a')
+  }
 
 }
 </script>
@@ -162,7 +166,7 @@ methods: {
 .container {
   position: relative;
   top: 100px;
-  max-width: 700px;
+  max-width: 800px;
   padding: 20px;
   background-color: #ebe8eb;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
@@ -194,13 +198,13 @@ button{
 }
 .btn-position{
     position: relative;
-    left: 273px;
+    left: 379px;
     bottom: 5px;
 }
 
 .filter-btn-position{
   position: relative;
-  left: 277px;
+  left: 383px;
   bottom: 5px;
   margin: 0 4px
 }
@@ -238,10 +242,10 @@ background-color:  #5c3199;
   text-decoration: line-through;
 }
 .name-width{
-  width: 23%;
+  width: 20%;
 }
 .details-width{
-  width: 60%;
+  width: 54%;
 }
 
 .action-width{

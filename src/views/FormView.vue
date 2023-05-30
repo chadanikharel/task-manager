@@ -10,6 +10,7 @@
 	<label class="label-bold">Details:</label>
 	<textarea  name="notes" v-model="details" placeholder="Enter task details..."  ></textarea>
 	<span class="text-danger" v-if="v$.details.$error">{{ v$.details.$errors[0].$message }}</span>
+  <input type="date" v-model="dueDate">
 	</form>
 	<button type="button" class="btn btn-primary btn-width" @click="submitTask">{{ buttonName }}</button> 
   </div>
@@ -29,7 +30,7 @@ data() {
     taskList:[],
     buttonName: "Add Task",
     editIndex: -1,
-    
+    dueDate:'',
   };
 },
 
@@ -47,12 +48,17 @@ mounted(){
 
 methods: {
   submitTask() {
+    const dateObj = new Date(this.dueDate);
+    const options = {month: 'long', day: 'numeric'}
+    const formattedDueDate = dateObj.toLocaleDateString(undefined, options)
+    console.log(dateObj)
     this.v$.$validate()
     if(!this.v$.$error){
 		if (this.editIndex !== -1) {
     const editedTask = {
       taskname: this.taskname,
       details: this.details,
+      dueDate: formattedDueDate,
     };
     
     this.taskList.splice(this.editIndex,1,editedTask);
@@ -63,7 +69,7 @@ methods: {
     const newTask = {
           taskname: this.taskname,
           details: this.details,
-          completed: false
+          dueDate: formattedDueDate
         };
         this.taskList.push(newTask);
         this.saveTaskList()
