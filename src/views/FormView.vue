@@ -10,6 +10,7 @@
 	<label class="label-bold">Details:</label>
 	<textarea  name="notes" v-model="details" placeholder="Enter task details..."  ></textarea>
 	<span class="text-danger" v-if="v$.details.$error">{{ v$.details.$errors[0].$message }}</span>
+  <label class="label-bold">Task Name:</label>
   <input type="date" v-model="dueDate">
 	</form>
 	<button type="button" class="btn btn-primary btn-width" @click="submitTask">{{ buttonName }}</button> 
@@ -51,7 +52,6 @@ methods: {
     const dateObj = new Date(this.dueDate);
     const options = {month: 'long', day: 'numeric'}
     const formattedDueDate = dateObj.toLocaleDateString(undefined, options)
-    console.log(dateObj)
     this.v$.$validate()
     if(!this.v$.$error){
 		if (this.editIndex !== -1) {
@@ -90,7 +90,6 @@ methods: {
   },
 
   getTaskDetails(index) {
-    console.log('index',index)
     this.editIndex = index;
     this.taskList = JSON.parse(localStorage.getItem(localStorageKey)) || [];
     const task = this.taskList[index];
@@ -136,7 +135,7 @@ methods: {
 .label-bold{
   font-weight: bold;
   color: #4d4d4d;
-  margin-bottom: 13px;
+  margin: 10px 0 13px 0;
 }
 
 h1 {
@@ -152,7 +151,7 @@ form {
   flex-direction: column;
 }
 
-form input[type="text"],
+form input[type="text"], input[type = "date"],
 form textarea {
   padding: 10px;
   border: none;

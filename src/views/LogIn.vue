@@ -20,6 +20,7 @@
 <script>
 import useValidate from '@vuelidate/core';
 import { required, minLength} from '@vuelidate/validators';
+import Swal from 'sweetalert2';
     export default{
         data(){
             return{
@@ -41,17 +42,16 @@ import { required, minLength} from '@vuelidate/validators';
                 this.v$.$validate()
                 if (!this.v$.$error) {
                     const formData = JSON.parse(localStorage.getItem('formData'));
-                    if(formData && this.username     === formData.email && this.password === formData.password){
+                    if(formData && this.username === formData.email && this.password === formData.password){
                     this.$router.push('/tasklist')
-                    console.log("form accepted")
                     }
 
-                    else{
-                        console.log("invalid credentials")
+                    else{ 
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Username or password incorrect !!'
+                        })
                     }
-                }
-                else{
-                    console.log("form rejected")
                 }
             }
         }

@@ -2,12 +2,12 @@
 <div class="custom-body"> 
 <div class="container">
   <button type="button" class="btn btn-position btn-primary" @click="this.$router.push(`/add`)">Add Task</button>
-  <button type="button" class="btn btn-primary filter-btn-position" @click="showCompletedTasks">Completed Tasks</button>
-  <button type="button" class="btn filter-btn-position btn-primary" @click="showPendingTasks">Pending Tasks</button>
+  <button type="button" class="btn btn-primary btn-position" @click="showCompletedTasks">Completed Tasks({{ completedTaskCounter }})</button>
+  <button type="button" class="btn btn-position btn-primary" @click="showPendingTasks">Pending Tasks({{ pendingTaskCounter }})</button>
   <table >
     <tbody v-if="displayFilteredTask">
       <tr v-for="(task, index) in filteredTaskList" :key="index">
-      <td>{{ task.taskname }}</td>
+      <td> {{ task.taskname }} </td>
       <td>{{ task.details }}</td> 
     </tr>
     </tbody>
@@ -34,7 +34,6 @@
 		<td class="cursor"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="icon-color" @click="editTask(index)" /> </td>
 		<td class="cursor" ><font-awesome-icon icon="fa-trash" class="icon-color" @click="showConfirmation(index)"/></td>
 	</tr>
-  <button @click="sortTaskListByDueDate()">sort</button> 
 	</tbody> 
   </table>
 </div>
@@ -54,12 +53,16 @@ data() {
 	taskList:[],
   displayFilteredTask: false,
   showCompleted : false,
+  completedTaskCounter: 0,
+  pendingTaskCounter: ''
   };
 },
 
 created(){
   this.getTaskList();
   this.initialTaskCompletionStatus();
+  this.sortTaskListByDueDate();
+  this.pendingTaskCounter = this.taskList.filter(task=>!task.completed).length;
 },
 
 computed: {
@@ -107,10 +110,19 @@ methods: {
 
   getTaskList() {
       this.taskList = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+      this.sortTaskListByDueDate;
     },
 
   toggleTask(index){
     this.taskList[index].completed = !this.taskList[index].completed;
+    if(this.taskList[index].completed){
+      this.completedTaskCounter++;
+      this.pendingTaskCounter--;
+    }
+    else{
+      this.completedTaskCounter --;
+      this.pendingTaskCounter++;
+    }
     this.saveTaskList();
     },
 
@@ -129,17 +141,18 @@ methods: {
     this.displayFilteredTask = true
     this.showCompleted = false
   },
-  },
 
-  sortTaskListByDueDate(){
+  
+  sortTaskListByDueDate() {
     this.taskList.sort((a,b)=>{
       const dateA = new Date(a.dueDate)
       const dateB = new Date(b.dueDate)
       return dateA-dateB
-    })
-    console.log(this.taskList)
-    console.log('a')
-  }
+    });
+    this.saveTaskList();
+  },
+  },
+
 
 }
 </script>
@@ -198,8 +211,8 @@ button{
 }
 .btn-position{
     position: relative;
-    left: 379px;
-    bottom: 5px;
+    left: 330px;
+    margin: 2px 5px;
 }
 
 .filter-btn-position{
