@@ -1,18 +1,30 @@
 <template>
 <div class="custom-body"> 
-<div class="container">
-  <button type="button" class="btn btn-position btn-primary" @click="this.$router.push(`/add`)">Add Task</button>
-  <button type="button" class="btn btn-primary btn-position" @click="showCompletedTasks">Completed Tasks({{ completedTaskCounter }})</button>
-  <button type="button" class="btn btn-position btn-primary" @click="showPendingTasks">Pending Tasks({{ pendingTaskCounter }})</button>
-  <table >
-    <tbody v-if="displayFilteredTask">
+  <div class="container custom-container">
+    <div class="row justify-content-end">
+      <div class="col-sm-3">
+        <button type="button" class="btn btn-position btn-primary" @click="this.$router.push(`/add`)">Add Task</button>
+      </div>
+      <div class="col-sm-5">
+        <button type="button" class="btn btn-primary btn-position" @click="showCompletedTasks">Completed Tasks({{ completedTaskCounter }})</button>
+      </div>
+      <div class="col-sm-4">
+        <button type="button" class="btn btn-position btn-primary" @click="showPendingTasks">Pending Tasks({{ pendingTaskCounter }})</button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table>
+        <tbody v-if="displayFilteredTask">
       <tr v-for="(task, index) in filteredTaskList" :key="index">
       <td> {{ task.taskname }} </td>
       <td>{{ task.details }}</td> 
     </tr>
     </tbody>
-  </table>
+      </table>
+    </div> 
 
+    <div class="table-responsive">
     <table>
 	<thead>
 	<tr>
@@ -37,9 +49,11 @@
 	</tbody> 
   </table>
 </div>
-</div>
-</template>
 
+</div>
+</div> 
+</template>  
+ 
 <script>
 import  Swal  from "sweetalert2";
 const localStorageKey ='tasks';
@@ -159,6 +173,7 @@ methods: {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -175,17 +190,19 @@ methods: {
   min-height: 100vh;
   background: linear-gradient(270deg, #6c5c81, #5d6c99);
 }
-
-.container {
+ 
+ 
+.custom-container {
   position: relative;
   top: 100px;
   max-width: 800px;
-  padding: 20px;
+   padding: 20px;
   background-color: #ebe8eb;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  min-height: 400px;
-}
+  border-radius: 10px; 
+  min-height: 300px;
+
+} 
 
 input[type="text"] {
   padding: 7px;
@@ -210,17 +227,10 @@ button{
   color: #5c3199;
 }
 .btn-position{
-    position: relative;
-    left: 330px;
     margin: 2px 5px;
 }
 
-.filter-btn-position{
-  position: relative;
-  left: 383px;
-  bottom: 5px;
-  margin: 0 4px
-}
+
 table {
 width: 100%;
 margin-bottom: 20px;

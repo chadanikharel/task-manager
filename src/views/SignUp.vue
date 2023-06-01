@@ -1,4 +1,4 @@
-<template>
+  <template>
     <div class="custom-body">
     <div class="container" >
     <h2>Sign Up</h2>
@@ -19,7 +19,8 @@
     </form>
     </div>
     </div>
-</template>
+</template>   
+
 
 <script>
 import useValidate from '@vuelidate/core';
@@ -91,7 +92,8 @@ import { required, email, minLength, sameAs, alphaNum,} from '@vuelidate/validat
     background-color: #e6e3e3;
     box-shadow: rgb(42, 66, 92) 0px 20px 30px -10px;
     border-radius: 10px;
-}
+} 
+
 
 h2{
     text-align: center;
